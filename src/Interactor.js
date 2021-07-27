@@ -8,7 +8,8 @@ const argIsOptional = (arg) =>
   arg.type.toString().startsWith('Option<');
 
 function Main (props) {
-  const { api, jsonrpc } = useSubstrate();
+  let { api, jsonrpc } = useSubstrate();
+
   const { accountPair } = props;
   const [status, setStatus] = useState(null);
 
@@ -95,6 +96,27 @@ function Main (props) {
       }
     } else if (interxType === 'RPC') {
       let metaParam = [];
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      jsonrpc = {
+        ...jsonrpc,
+        defiModule: {
+          getBalance: {
+            alias: ['get_balance'],
+            description: 'RPC for getting user balance',
+            jsonrpc: 'defiModule_getBalance',
+            method: 'getBalance',
+            isSubscription: false,
+            params: [
+              {
+                name: 'user',
+                type: 'AccountId'
+              }
+            ],
+            section: 'defiModule',
+            type: 'Balance'
+          }
+        }
+      };
 
       if (jsonrpc[palletRpc] && jsonrpc[palletRpc][callable]) {
         metaParam = jsonrpc[palletRpc][callable].params;

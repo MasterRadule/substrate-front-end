@@ -62,13 +62,47 @@ const reducer = (state, action) => {
 // Connecting to the Substrate node
 
 const connect = (state, dispatch) => {
-  const { apiState, socket, jsonrpc, types } = state;
+  let { apiState, socket, jsonrpc, types } = state;
   // We only want this function to be performed once
   if (apiState) return;
 
   dispatch({ type: 'CONNECT_INIT' });
 
   const provider = new WsProvider(socket);
+  types = {
+    ...types,
+    AddressInfo: {
+      deposit_principal: 'Balance',
+      deposit_date: 'BlockNumber',
+      borrow_principal: 'Balance',
+      borrow_date: 'BlockNumber'
+    },
+    BalanceInfo: {
+      balance: 'Balance'
+    }
+  };
+
+  jsonrpc = {
+    ...jsonrpc,
+    defiModule: {
+      getBalance: {
+        alias: ['get_balance'],
+        description: 'RPC for getting user balance',
+        jsonrpc: 'defiModule_getBalance',
+        method: 'getBalance',
+        isSubscription: false,
+        params: [
+          {
+            name: 'user',
+            type: 'AccountId'
+          }
+        ],
+        section: 'defiModule',
+        type: 'BalanceInfo'
+      }
+    }
+  };
+
   const _api = new ApiPromise({ provider, types, rpc: jsonrpc });
 
   // Set listeners for disconnection and reconnection event.

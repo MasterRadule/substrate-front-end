@@ -133,6 +133,26 @@ const connect = (state, dispatch) => {
         ],
         section: 'defiModule',
         type: 'BorrowingInfo'
+      },
+      getDepositAPY: {
+        alias: ['get_deposit_apy'],
+        description: 'RPC for getting deposit APY',
+        jsonrpc: 'defiModule_getDepositAPY',
+        method: 'getDepositAPY',
+        isSubscription: false,
+        params: [],
+        section: 'defiModule',
+        type: 'BalanceInfo'
+      },
+      getBorrowingAPY: {
+        alias: ['get_borrowing_apy'],
+        description: 'RPC for getting borrowing APY',
+        jsonrpc: 'defiModule_getBorrowingAPY',
+        method: 'getBorrowingAPY',
+        isSubscription: false,
+        params: [],
+        section: 'defiModule',
+        type: 'BalanceInfo'
       }
     }
   };

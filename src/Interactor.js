@@ -143,7 +143,7 @@ function Main (props) {
               }
             ],
             section: 'defiModule',
-            type: 'BorrowingInfo'
+            type: 'BalanceInfo'
           },
           getDepositAPY: {
             alias: ['get_deposit_apy'],

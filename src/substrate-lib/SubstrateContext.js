@@ -132,7 +132,7 @@ const connect = (state, dispatch) => {
           }
         ],
         section: 'defiModule',
-        type: 'BorrowingInfo'
+        type: 'BalanceInfo'
       },
       getDepositAPY: {
         alias: ['get_deposit_apy'],

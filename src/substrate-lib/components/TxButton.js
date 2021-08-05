@@ -117,8 +117,15 @@ function TxButton ({
     setUnsub(() => unsub);
   };
 
-  const queryResHandler = result =>
+  const isHex = (num) => Boolean(num.match(/^0x[0-9a-f]+$/i));
+
+  const queryResHandler = result => {
+    const resultJSON = JSON.parse(result.toString());
+    if (resultJSON.balance && isHex(resultJSON.balance.toString())) {
+      result = (parseInt(resultJSON.balance, 16) / 10000000000000000).toFixed(2) + '%';
+    }
     result.isNone ? setStatus('None') : setStatus(result.toString());
+  };
 
   const query = async () => {
     const transformed = transformParams(paramFields, inputParams);

@@ -8,6 +8,8 @@ import { web3Accounts, web3Enable } from '@polkadot/extension-dapp';
 import keyring from '@polkadot/ui-keyring';
 
 import config from '../config';
+import { rpcConfig } from '../config/rpc';
+import { customTypes } from '../config/custom_types';
 
 const parsedQuery = queryString.parse(window.location.search);
 const connectedSocket = parsedQuery.rpc || config.PROVIDER_SOCKET;
@@ -71,90 +73,12 @@ const connect = (state, dispatch) => {
   const provider = new WsProvider(socket);
   types = {
     ...types,
-    AddressInfo: {
-      deposit_principal: 'Balance',
-      deposit_date: 'BlockNumber',
-      borrow_principal: 'Balance',
-      borrow_date: 'BlockNumber'
-    },
-    BalanceInfo: {
-      balance: 'Balance'
-    },
-    BorrowingInfo: {
-      borrowing_balance: 'Balance',
-      allowed_borrowing_amount: 'Balance'
-    }
+    ...customTypes
   };
 
   jsonrpc = {
     ...jsonrpc,
-    defiModule: {
-      getBalance: {
-        alias: ['get_balance'],
-        description: 'RPC for getting user balance',
-        jsonrpc: 'defiModule_getBalance',
-        method: 'getBalance',
-        isSubscription: false,
-        params: [
-          {
-            name: 'user',
-            type: 'AccountId'
-          }
-        ],
-        section: 'defiModule',
-        type: 'BalanceInfo'
-      },
-      getDebt: {
-        alias: ['get_debt'],
-        description: 'RPC for getting user debt',
-        jsonrpc: 'defiModule_getDebt',
-        method: 'getDebt',
-        isSubscription: false,
-        params: [
-          {
-            name: 'user',
-            type: 'AccountId'
-          }
-        ],
-        section: 'defiModule',
-        type: 'BalanceInfo'
-      },
-      getAllowedBorrowingAmount: {
-        alias: ['get_allowed_borrowing_amount'],
-        description: 'RPC for getting user allowed borrowing amount',
-        jsonrpc: 'defiModule_getAllowedBorrowingAmount',
-        method: 'getAllowedBorrowingAmount',
-        isSubscription: false,
-        params: [
-          {
-            name: 'user',
-            type: 'AccountId'
-          }
-        ],
-        section: 'defiModule',
-        type: 'BalanceInfo'
-      },
-      getDepositAPY: {
-        alias: ['get_deposit_apy'],
-        description: 'RPC for getting deposit APY',
-        jsonrpc: 'defiModule_getDepositAPY',
-        method: 'getDepositAPY',
-        isSubscription: false,
-        params: [],
-        section: 'defiModule',
-        type: 'BalanceInfo'
-      },
-      getBorrowingAPY: {
-        alias: ['get_borrowing_apy'],
-        description: 'RPC for getting borrowing APY',
-        jsonrpc: 'defiModule_getBorrowingAPY',
-        method: 'getBorrowingAPY',
-        isSubscription: false,
-        params: [],
-        section: 'defiModule',
-        type: 'BalanceInfo'
-      }
-    }
+    ...rpcConfig
   };
 
   const _api = new ApiPromise({ provider, types, rpc: jsonrpc });

@@ -7,9 +7,5 @@ export const customTypes = {
   },
   BalanceInfo: {
     balance: 'Balance'
-  },
-  BorrowingInfo: {
-    borrowing_balance: 'Balance',
-    allowed_borrowing_amount: 'Balance'
   }
 };
